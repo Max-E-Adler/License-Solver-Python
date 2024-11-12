@@ -44,11 +44,13 @@ def grade_word(input, key):
     else:
         return 0 #this one does not work
 
+#incomplete function: will return a grade on a string input by a string against the first may be graded
 def grade_substrings(input):
     one_letter_grade = 100
 
 
 # longest_perfects = ['greens', 'ocreae', 'otaria', 'orpins', 'nasial', 'atorai', 'mesial', 'mesial', 'mesail', 'mesail', 'ordeal', 'scotia', 'nasial', 'nosine', 'nudens'] came from this function
+#this function truncates every word in the word list and then checks to see if that truncated word is in the word list
 def check_wordlist_for_truncated(wordslist):
     max_length = 0
     output = []
@@ -64,7 +66,7 @@ def check_wordlist_for_truncated(wordslist):
             output += [check_string]
     return output
 
-
+#returns matches from the word list, given the word list and a regex
 def matches_from_wordslist_and_regex(wordslist, regex):
     output_list = []
 
@@ -74,6 +76,7 @@ def matches_from_wordslist_and_regex(wordslist, regex):
 
     return output_list
 
+#creates a regex for "perfect" words (words that bookend the input by 1 character on each side, and separates the individual word by 1 character)
 def perfect_finder_regex_from_string(input_string):
     regex = "^."
     for char in input_string:
@@ -81,6 +84,7 @@ def perfect_finder_regex_from_string(input_string):
     regex += "$"
     return regex
 
+#creates a regex for words that checks for words that have the input string within them, but not with all the letters connected to each other, just the same order
 def finder_regex_from_string(input_string):
     regex = "^.*"
     for char in input_string:
@@ -88,21 +92,13 @@ def finder_regex_from_string(input_string):
     regex += "$"
     return regex
 
-def dictionary_filepath_to_wordslist(dictionary_filepath = "C://Users//MaxAd//Desktop//python//words_alpha.txt"):
-
-    #filepath = input("What's the filepath?")
-    # filepath = "C://Users//MaxAd//Desktop//python"
-    # files = os.listdir(filepath)
-    # counter = 0
-    # for filename in files:
-    #     print (str(counter) + ": " + filename)
-    #     counter += 1
-    # filecounter = int(input("Which file would you like to use as your dictionary?\n"))
-    # dictionary_filepath = filepath + "//" +  files[filecounter]
+#takes in a filepath (defaults to where this is on my machine) and outputs a string with all the words in this list
+def dictionary_filepath_to_wordslist(dictionary_filepath = "C://Users//MaxAd//Desktop//python//license-solver-python//License-Solver-Python//words_alpha.txt"):
     with open(dictionary_filepath) as f:
         words_list = f.read().splitlines()
     return words_list
 
+#loops through all 3 letter combinations of letters prints the three letter combination that has the most words that it works for (the answer is "eae")  
 def aaa_zzz_matches_loop(wordslist):
     characters = "abcdefghijklmnopqrstuvwxyz"
     max_length = 0
@@ -119,15 +115,13 @@ def aaa_zzz_matches_loop(wordslist):
                     max_length = len(output_list)
                     output = output_list
                     longest_string = chars
-                    print("new max length! wooooooooooooooooooooooooooooooooooooooooooo")
-                    print("max_length: " + str(max_length))
-                    print("longest_string: " + longest_string)
-                    print("output: " + str(output))
 
     print("max_length: " + str(max_length))
     print("longest_string: " + longest_string)
     print("output: " + str(output))
 
+
+#checks all possible consecutive strings, looping around once when the end of the alphabet is reached
 def consecutive_alphabet_checker(wordslist):
     #here are the results of this function when it went to the end of the alphabet
 # abcde
@@ -170,5 +164,6 @@ def consecutive_alphabet_checker(wordslist):
         print (matches_from_wordslist_and_regex(wordslist, perfect_finder_regex_from_string(word)))
     return output
 
+#required
 if __name__ == '__main__':
     main()
