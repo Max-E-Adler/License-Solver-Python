@@ -1,5 +1,7 @@
 import os
 import re
+import itertools
+import time
 
 longest_perfects = ['greens', 'ocreae', 'otaria', 'orpins', 'nasial', 'atorai', 'mesial', 'mesial', 'mesail', 'mesail', 'ordeal', 'scotia', 'nasial', 'nosine', 'nudens']
 
@@ -17,8 +19,45 @@ def main():
     #     print(str(matches_from_wordslist_and_regex(words_list, perfect_finder_regex_from_string(word))))
     # consecutive_alphabet_checker(words_list)
     consonant_vowel_ratio(words_list)
-    
-    
+    # print(find_swappable_three_letter_strings(words_list))
+
+#finds all permutations of 3 letters without any repetition (aaa, aab, but not aba or baa)
+#puts all of those into test_combinations
+def find_swappable_three_letter_strings(wordslist):
+    # _output is the result of this function, it takes a while to run
+    _output = ['aaa', 'aab', 'aac', 'aad', 'aae', 'aag', 'aah', 'aai', 'aak', 'aal', 'aam', 'aan', 'aao', 'aap', 'aar', 'aas', 'aat', 'aau', 'aay', 'acc', 'acd', 'ace', 'aci', 'acl', 'acm', 'aco', 'acp', 'acr', 'acs', 'ade', 'adl', 'adr', 'aee', 'aeh', 'aei', 'ael', 'aem', 'aen', 'aeo', 'aep', 'aer', 'aes', 'aet', 'aeu', 'afi', 'afl', 'agn', 'ahi', 'ahl', 'ahn', 'aho', 'ahr', 'ahu', 'aii', 'ail', 'aim', 'ain', 'aio', 'aip', 'air', 'ais', 'ait', 'aiu', 'aiy', 'all', 'aln', 'alo', 'alr', 'als', 'alt', 'alu', 'amn', 'amr', 'ann', 'ano', 'anp', 'anr', 'ant', 'anu', 'aoo', 'aor', 'aos', 'aot', 'aou', 'aoy', 'apr', 'arr', 'art', 'aru', 'ast', 'asu', 'att', 'atu', 'aty', 'auu', 'auy', 'bee', 'beu', 'bio', 'bno', 'brs', 'cce', 'cci', 'ccp', 'cee', 'cei', 'cel', 'cem', 'cen', 'ceo', 'ces', 'cet', 'ceu', 'cii', 'cil', 'cin', 'cio', 'cit', 'ciu', 'clm', 'cln', 'clo', 'clr', 'clt', 'clu', 'cnn', 'cno', 'cnp', 'cnr', 'cnt', 'cnu', 'coo', 'cop', 'cor', 'cou', 'crr', 'cru', 'ctu', 'dee', 'dei', 'del', 'des', 'det', 'deu', 'dil', 'dio', 'diu', 'dor', 'dsu', 'eee', 'eef', 'eeg', 'eeh', 'eei', 'eek', 'eel', 'eem', 'een', 'eeo', 'eep', 'eer', 'ees', 'eet', 'eeu', 'eey', 'egi', 'egn', 'egu', 'ehi', 'ehl', 'eho', 'ehr', 'ehu', 'eii', 'eil', 'eim', 'ein', 'eio', 'eip', 'eir', 'eis', 'eit', 'eiu', 'eln', 'elo', 'elr', 'els', 'elt', 'elu', 'ely', 'emn', 'emo', 'ems', 'emt', 'emu', 'enn', 'eno', 'enr', 'ens', 'ent', 'enu', 'eoo', 'eor', 'eos', 'eot', 'eou', 'epr', 'ept', 'epu', 'ers', 'eru', 'ery', 'ess', 'est', 'esu', 'ett', 'etu', 'euu', 'ggi', 'gio', 'gir', 'git', 'giu', 'glo', 'gnr', 'gou', 'grt', 'hhi', 'hii', 'hil', 'hin', 'hio', 'hir', 'his', 'hmo', 'hmr', 'hnr', 'hnt', 'hnu', 'hoo', 'hpr', 'hrt', 'hru', 'htt', 'huu', 'iii', 'iil', 'iim', 'iin', 'iio', 'iip', 'iir', 'iis', 'iit', 'iiu', 'iiv', 'iiy', 'iln', 'ilo', 'ilp', 'ilr', 'ils', 'ilt', 'ilu', 'imn', 'imt', 'ino', 'inp', 'inr', 'int', 'inu', 'ioo', 'iop', 'ior', 'ios', 'iot', 'iou', 'ipr', 'ipt', 'irr', 'irs', 'iru', 'iss', 'ist', 'isu', 'itu', 'ity', 'iuu', 'iuy', 'kll', 'lln', 'llt', 'lmr', 'lmt', 'lnn', 'lnp', 'lnr', 'lnt', 'lnu', 'lnz', 'loo', 'lor', 'lot', 'lou', 'lpp', 'lpt', 'lrs', 'lrt', 'ltt', 'ltu', 'luu', 'mnn', 'mnr', 'mnt', 'mnu', 'moo', 'mrr', 'mrs', 'mrt', 'mtt', 'nnn', 'nnp', 'nnr', 'nns', 'nnt', 'nnu', 'nnw', 'noo', 'nor', 'not', 'nou', 'noy', 'npr', 'npu', 'nrr', 'nrt', 'nru', 'nrv', 'nst', 'nuu', 'ooo', 'oop', 'oor', 'oot', 'oou', 'ooy', 'opt', 'orr', 'ors', 'oru', 'ory', 'osu', 'ott', 'oty', 'ouu', 'ppr', 'prr', 'prs', 'prt', 'psu', 'rrs', 'rrt', 'rru', 'rsu', 'rtt', 'rty', 'ruu', 'suu', 'ttt', 'uuu']
+    characters = "abcdefghijklmnopqrstuvwxyz"
+    output = []
+    for subset in itertools.combinations_with_replacement(characters, 3):
+        str = ""
+        for char in subset:
+            str += char
+        
+        if test_combinations(wordslist, str):
+            output.append(str)
+
+    return output
+
+#takes a 3 letter combination of letters and finds all permutations of them
+#this is done so that we can test them against each other
+def test_combinations(wordslist, input):
+    print(input)
+    perm_strings = []
+    for subset in itertools.permutations(input, 3):
+        str = ""
+        for char in subset:
+            str += char        
+        if str in perm_strings:
+            continue
+        else:
+            perm_strings.append(str)
+    for word in perm_strings:
+        reg = perfect_finder_regex_from_string(word)
+        if not match_exists_from_wordslist_and_regex(wordslist, reg):
+            return False       
+    return True
+
+#calculates the ratio between consonants and vowels of all words in a wordslist    
 def consonant_vowel_ratio(wordslist):
     #the results of this function are contained within this "winners" string, i just put it in there to collapse them
     winners = """
@@ -191,8 +230,9 @@ def consonant_vowel_ratio(wordslist):
     for word in wordslist:
         if word in banned_words:
             continue
-        cons = count_consonants(word)
-        vowels = count_vowels(word)
+        cons_vowels = count_consonants_and_vowels(word)
+        cons = cons_vowels[0]
+        vowels = cons_vowels[1]
         if vowels == 0 or cons == 0:
             continue
         ratio = cons/vowels
@@ -214,22 +254,17 @@ def consonant_vowel_ratio(wordslist):
     print("Lowest")
     for word in lowest_ratio_words:
         print(f"\"{word}\",")
-    
-        
 
-def count_vowels(string):
+#counts vowels and consonants and returns them both in an array
+def count_consonants_and_vowels(string):
     num_vowels=0
-    for char in string:
-        if char in "aeiouyAEIOUY":
-           num_vowels = num_vowels+1
-    return num_vowels
-
-def count_consonants(string):
     num_cons=0
     for char in string:
-        if char in "bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ":
-           num_cons = num_cons+1
-    return num_cons
+        if char in "aeiouyAEIOUY":
+            num_vowels += 1
+        else:
+            num_cons += 1
+    return [num_cons, num_vowels]
 
 def grade_word(input, key):
     #given an input and a key against which the input may be graded, return a "score" that is higher the closer it is to perfect
@@ -287,6 +322,13 @@ def matches_from_wordslist_and_regex(wordslist, regex):
             output_list.append(word)
 
     return output_list
+
+#this just checks to see if any matches exist, given the word list and a regex
+def match_exists_from_wordslist_and_regex(wordslist, regex):
+    for word in wordslist:
+        if re.search(regex, word):
+            return True
+    return False    
 
 #creates a regex for "perfect" words (words that bookend the input by 1 character on each side, and separates the individual word by 1 character)
 def perfect_finder_regex_from_string(input_string):
@@ -378,4 +420,6 @@ def consecutive_alphabet_checker(wordslist):
 
 #required
 if __name__ == '__main__':
+    start_time = time.time()
     main()
+    print("--- %s seconds ---" % (time.time() - start_time))
