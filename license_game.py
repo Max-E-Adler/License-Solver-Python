@@ -5,9 +5,9 @@ longest_perfects = ['greens', 'ocreae', 'otaria', 'orpins', 'nasial', 'atorai', 
 
 def main():
     words_list = dictionary_filepath_to_wordslist()
-    perfect_regex = perfect_finder_regex_from_string("eae")
-    output_list = matches_from_wordslist_and_regex(words_list, perfect_regex)
-    print(output_list)
+    # perfect_regex = perfect_finder_regex_from_string("eae")
+    # output_list = matches_from_wordslist_and_regex(words_list, perfect_regex)
+    # print(output_list)
     # aaa_zzz_matches_loop(words_list)
     # check_wordlist_for_longest_perfect_actual_word(words_list))
     # print(check_wordlist_for_truncated(words_list))
@@ -16,8 +16,220 @@ def main():
     #     print(word in words_list)
     #     print(str(matches_from_wordslist_and_regex(words_list, perfect_finder_regex_from_string(word))))
     # consecutive_alphabet_checker(words_list)
-    print(grade_word("lmnppo", "lmno"))
+    consonant_vowel_ratio(words_list)
     
+    
+def consonant_vowel_ratio(wordslist):
+    #the results of this function are contained within this "winners" string, i just put it in there to collapse them
+    winners = """
+    Without Banned List
+
+    Highest
+    "shrrinkng",
+    "strengths",
+    "tsktsking",
+    Lowest
+    "ouabaio",
+    "ukiyoye",
+
+    With Banned List
+    Highest is "strengths" but here are some others
+    "borschts",
+    "schlepps",
+    "schmucks",
+    "schnapps",
+    "schticks",
+    "strength",
+    "twelfths",
+    Lowest
+    "adieu",
+    "aioli",
+    "aquae",
+    "audio",
+    "aurae",
+    "bayou",
+    "eerie",
+    "gooey",
+    "yaboo",
+    "yahoo",
+    "yowie",
+    "ouija",
+    "oxeye",
+    "payee",
+    "queue",
+
+    """
+    banned_words = {
+        "strengths", #strengths is actually my favorite, best one, but i want to see other goodish ones
+        "psychichthys",
+        "ouabaio",
+        "psychorhythm",
+        "aeaean",
+        "chrysophyll",
+        "aeolia",
+        "glycyphyllin",
+        "eogaea",
+        "rhythmless",
+        "ooecia",
+        "shrrinkng",
+        "aalii",
+        "abaue",
+        "aecia",
+        "aequi",
+        "aevia",
+        "ailie",
+        "aimee",
+        "ainee",
+        "ainoi",
+        "aloyau",
+        "anoia",
+        "aoife",
+        "aotea",
+        "aouad",
+        "apayao",
+        "araua",
+        "areae",
+        "arioi",
+        "aueto",
+        "aulae",
+        "auloi",
+        "aurei",
+        "avoue",
+        "cooee",
+        "heiau",
+        "heuau",
+        "yautia",
+        "iiasa",
+        "iliau",
+        "kioea",
+        "lauia",
+        "lieue",
+        "looie",
+        "louie",
+        "miaou",
+        "oidia",
+        "oorie",
+        "oozoa",
+        "ouabe",
+        "oukia",
+        "ourie",
+        "ousia",
+        "outeye",
+        "raiae",
+        "tsktsking",
+        "taoiya",
+        "uaupe",
+        "ukiyoe",
+        "ukiyoye",
+        "umaua",
+        "uraei",
+        "zoaea",
+        "zoeae",
+        "gayyou",
+        "mayeye",
+        "obeyeo",
+        "aerie",
+        "aguey",
+        "aiery",
+        "ayous",
+        "aliya",
+        "boyau",
+        "cooey",
+        "ediya",
+        "eyoty",
+        "eyrie",
+        "hayey",
+        "hooey",
+        "hooye",
+        "yagua",
+        "yameo",
+        "yaqui",
+        "yaray",
+        "yawey",
+        "yazoo",
+        "yeara",
+        "yeuky",
+        "ineye",
+        "yogee",
+        "youre",
+        "youse",
+        "youve",
+        "youze",
+        "kieye",
+        "layia",
+        "looey",
+        "louey",
+        "mayey",
+        "nyaya",
+        "noyau",
+        "oyana",
+        "oriya",
+        "peeoy",
+        "poyou",
+        "royou",
+        "sayee",
+        "sooey",
+        "teaey",
+        "uayeb",
+        "uneye",
+        "upaya",
+        "wayao",
+        "nachtmml",
+        "pschents",
+        "schlocks",
+        "schmaltz",
+        "scrfchar",
+        "scrunchs",
+        "smrrebrd",
+        "sprights",
+        "tsktsked"
+    }
+    highest_ratio_words = [""]
+    lowest_ratio_words = [""]
+    highest_ratio = 0.0
+    lowest_ratio = 1000.0
+    for word in wordslist:
+        if word in banned_words:
+            continue
+        cons = count_consonants(word)
+        vowels = count_vowels(word)
+        if vowels == 0 or cons == 0:
+            continue
+        ratio = cons/vowels
+        
+        if ratio > highest_ratio:
+            highest_ratio = ratio
+            highest_ratio_words = [word]
+        elif ratio == highest_ratio:
+            highest_ratio_words += [word]
+        elif ratio < lowest_ratio:
+            lowest_ratio = ratio
+            lowest_ratio_words = [word]
+        elif ratio == lowest_ratio:
+            lowest_ratio_words += [word]
+
+    print("Highest is \"strengths\" but here are some others")
+    for word in highest_ratio_words:
+        print(f"\"{word}\",")
+    print("Lowest")
+    for word in lowest_ratio_words:
+        print(f"\"{word}\",")
+    
+        
+
+def count_vowels(string):
+    num_vowels=0
+    for char in string:
+        if char in "aeiouyAEIOUY":
+           num_vowels = num_vowels+1
+    return num_vowels
+
+def count_consonants(string):
+    num_cons=0
+    for char in string:
+        if char in "bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ":
+           num_cons = num_cons+1
+    return num_cons
 
 def grade_word(input, key):
     #given an input and a key against which the input may be graded, return a "score" that is higher the closer it is to perfect
